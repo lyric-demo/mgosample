@@ -1,0 +1,2 @@
+# mgosample
+Golang+MongoDB+SemanticUI
