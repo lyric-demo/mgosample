@@ -37,8 +37,9 @@ func main() {
 		c.JSON(code, util.Error(errors.New(msg)))
 	})
 
-	api := e.Group("/api")
-	// 文章管理
+	api := e.Group("/api").Group("/v1")
+
+	// 注册文章管理路由
 	controllers.RegisterArticle(api)
 
 	log.Println(fmt.Sprintf("[%s] is running at %d port.", conf.APP_CONFIG.Name, conf.APP_CONFIG.Port))

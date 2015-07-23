@@ -3,11 +3,10 @@ package models
 import (
 	"time"
 
-	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 )
 
-// 文章管理
+// Article 文章管理结构
 type Article struct {
 	DbBase
 	Id          bson.ObjectId `bson:"_id,omitempty"`
@@ -19,29 +18,34 @@ type Article struct {
 	Type        string        `bson:",omitempty"` // 分类
 }
 
-// 集合名称
-func (this *Article) CName() string {
+// CName 获取当前集合名称
+func (a *Article) CName() string {
 	return "articles"
 }
 
-// 查询所有数据
-func (this *Article) GetData(data *[]Article) error {
-	return this.Find(this.CName(), nil, nil).All(data)
+// Insert 插入记录
+func (a *Article) Insert() error {
+	return a.Collection(a.CName()).Insert(a)
 }
 
-// 查询单条数据
-func (this *Article) GetId() (Article, error) {
+// Update 更新记录
+func (a *Article) Update() error {
+	return a.Collection(a.CName()).UpdateId(a.Id, bson.M{"$set": a})
+}
+
+// Delete 删除记录
+func (a *Article) Delete() error {
+	return a.Collection(a.CName()).RemoveId(a.Id)
+}
+
+// GetSingleData 获取单条数据
+func (a *Article) GetSingleData() (Article, error) {
 	var article Article
-	err := this.Collection(this.CName()).FindId(this.Id).One(&article)
+	err := a.Collection(a.CName()).FindId(a.Id).One(&article)
 	return article, err
 }
 
-// 保存数据
-func (this *Article) Save() (*mgo.ChangeInfo, error) {
-	return this.Collection(this.CName()).Upsert(bson.M{"_id": this.Id}, this)
-}
-
-// 移除数据（id）
-func (this *Article) Remove() error {
-	return this.Collection(this.CName()).RemoveId(this.Id)
+// GetData 获取所有数据
+func (a *Article) GetData(data *[]Article) error {
+	return a.Find(a.CName(), nil, nil).All(data)
 }

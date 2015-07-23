@@ -11,7 +11,7 @@ var (
 	TestId = bson.NewObjectId()
 )
 
-func TestSave(t *testing.T) {
+func TestArticleInsert(t *testing.T) {
 	art := new(Article)
 	art.Id = TestId
 	art.Title = "测试标题"
@@ -20,17 +20,17 @@ func TestSave(t *testing.T) {
 	art.PublishDate = time.Now()
 	art.Tags = []string{"测试"}
 	art.Type = "测试分类"
-	if _, err := art.Save(); err != nil {
+	if err := art.Insert(); err != nil {
 		t.Error(err)
 		return
 	}
-	t.Log("Save success.")
+	t.Log("Insert success.")
 }
 
-func TestGetId(t *testing.T) {
+func TestArticleGetSingleData(t *testing.T) {
 	art := new(Article)
 	art.Id = TestId
-	data, err := art.GetId()
+	data, err := art.GetSingleData()
 	if err != nil {
 		t.Error(err)
 		return
@@ -38,7 +38,18 @@ func TestGetId(t *testing.T) {
 	t.Log(data)
 }
 
-func TestGetData(t *testing.T) {
+func TestArticleUpdate(t *testing.T) {
+	art := new(Article)
+	art.Id = TestId
+	art.Title = "Test Title"
+	if err := art.Update(); err != nil {
+		t.Error(err)
+		return
+	}
+	t.Log("Update success.")
+}
+
+func TestArticleGetData(t *testing.T) {
 	var data []Article
 	art := new(Article)
 	if err := art.GetData(&data); err != nil {
@@ -48,12 +59,12 @@ func TestGetData(t *testing.T) {
 	t.Log(data)
 }
 
-func TestRemove(t *testing.T) {
+func TestArticleDelete(t *testing.T) {
 	art := new(Article)
 	art.Id = TestId
-	if err := art.Remove(); err != nil {
+	if err := art.Delete(); err != nil {
 		t.Error(err)
 		return
 	}
-	t.Log("Remove success.")
+	t.Log("Delete success.")
 }
