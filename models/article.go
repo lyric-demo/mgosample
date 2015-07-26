@@ -8,14 +8,14 @@ import (
 
 // Article 文章管理结构
 type Article struct {
-	DbBase
-	Id          bson.ObjectId `bson:"_id,omitempty"`
-	Title       string        `bson:",omitempty"` //标题
-	Body        string        `bson:",omitempty"` // 内容
-	Author      string        `bson:",omitempty"` // 作者
-	PublishDate time.Time     `bson:",omitempty"` // 发布日期
-	Tags        []string      `bson:",omitempty"` // 标签
-	Type        string        `bson:",omitempty"` // 分类
+	DbBase      `bson:",omitempty"`
+	Id          bson.ObjectId `bson:"_id,omitempty" json:"id"`
+	Title       string        `bson:",omitempty" json:"title"`        //标题
+	Body        string        `bson:",omitempty" json:"body"`         // 内容
+	Author      string        `bson:",omitempty" json:"author"`       // 作者
+	PublishDate time.Time     `bson:",omitempty" json:"publish_date"` // 发布日期
+	Tags        string        `bson:",omitempty" json:"tags"`         // 标签
+	Type        string        `bson:",omitempty" json:"type"`         // 分类
 }
 
 // CName 获取当前集合名称
