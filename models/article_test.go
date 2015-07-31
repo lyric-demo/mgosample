@@ -8,17 +8,17 @@ import (
 )
 
 var (
-	TestId = bson.NewObjectId()
+	TestID = bson.NewObjectId()
 )
 
 func TestArticleInsert(t *testing.T) {
 	art := new(Article)
-	art.Id = TestId
+	art.ID = TestID
 	art.Title = "测试标题"
 	art.Body = "测试标题内容"
 	art.Author = "Lyric"
 	art.PublishDate = time.Now()
-	art.Tags = []string{"测试"}
+	art.Tags = "测试"
 	art.Type = "测试分类"
 	if err := art.Insert(); err != nil {
 		t.Error(err)
@@ -29,7 +29,7 @@ func TestArticleInsert(t *testing.T) {
 
 func TestArticleGetSingleData(t *testing.T) {
 	art := new(Article)
-	art.Id = TestId
+	art.ID = TestID
 	data, err := art.GetSingleData()
 	if err != nil {
 		t.Error(err)
@@ -40,7 +40,7 @@ func TestArticleGetSingleData(t *testing.T) {
 
 func TestArticleUpdate(t *testing.T) {
 	art := new(Article)
-	art.Id = TestId
+	art.ID = TestID
 	art.Title = "Test Title"
 	if err := art.Update(); err != nil {
 		t.Error(err)
@@ -59,9 +59,19 @@ func TestArticleGetData(t *testing.T) {
 	t.Log(data)
 }
 
+func TestArticleGetPageData(t *testing.T) {
+	var data []Article
+	art := new(Article)
+	if err := art.GetPageData(0, 10, &data); err != nil {
+		t.Error(err)
+		return
+	}
+	t.Log(data)
+}
+
 func TestArticleDelete(t *testing.T) {
 	art := new(Article)
-	art.Id = TestId
+	art.ID = TestID
 	if err := art.Delete(); err != nil {
 		t.Error(err)
 		return

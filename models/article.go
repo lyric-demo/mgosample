@@ -9,7 +9,7 @@ import (
 // Article 文章管理结构
 type Article struct {
 	DbBase      `bson:",omitempty"`
-	Id          bson.ObjectId `bson:"_id,omitempty" json:"id"`
+	ID          bson.ObjectId `bson:"_id,omitempty" json:"id"`
 	Title       string        `bson:",omitempty" json:"title"`        //标题
 	Body        string        `bson:",omitempty" json:"body"`         // 内容
 	Author      string        `bson:",omitempty" json:"author"`       // 作者
@@ -30,22 +30,27 @@ func (a *Article) Insert() error {
 
 // Update 更新记录
 func (a *Article) Update() error {
-	return a.Collection(a.CName()).UpdateId(a.Id, bson.M{"$set": a})
+	return a.Collection(a.CName()).UpdateId(a.ID, a)
 }
 
 // Delete 删除记录
 func (a *Article) Delete() error {
-	return a.Collection(a.CName()).RemoveId(a.Id)
+	return a.Collection(a.CName()).RemoveId(a.ID)
 }
 
 // GetSingleData 获取单条数据
 func (a *Article) GetSingleData() (Article, error) {
 	var article Article
-	err := a.Collection(a.CName()).FindId(a.Id).One(&article)
+	err := a.Collection(a.CName()).FindId(a.ID).One(&article)
 	return article, err
 }
 
 // GetData 获取所有数据
 func (a *Article) GetData(data *[]Article) error {
 	return a.Find(a.CName(), nil, nil).All(data)
+}
+
+// GetPageData 获取所有分页数据
+func (a *Article) GetPageData(skip, limit int, data *[]Article) error {
+	return a.Find(a.CName(), nil, nil).Skip(skip).Limit(limit).All(data)
 }

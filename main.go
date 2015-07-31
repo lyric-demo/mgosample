@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"log"
@@ -22,6 +23,12 @@ func main() {
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 	e.Use(middleware.Gzip())
+
+	// 解析绑定请求
+	e.SetBinder(func(r *http.Request, v interface{}) error {
+		defer r.Body.Close()
+		return json.NewDecoder(r.Body).Decode(v)
+	})
 
 	// 错误处理
 	e.SetHTTPErrorHandler(func(err error, c *echo.Context) {
