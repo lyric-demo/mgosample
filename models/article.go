@@ -50,6 +50,11 @@ func (a *Article) GetData(data *[]Article) error {
 	return a.Find(a.CName(), nil, nil).All(data)
 }
 
+// AllCount 获取所有数据条数
+func (a *Article) AllCount() (int, error) {
+	return a.Find(a.CName(), nil, nil).Count()
+}
+
 // GetPageData 获取所有分页数据
 func (a *Article) GetPageData(skip, limit int, data *[]Article) error {
 	return a.Find(a.CName(), nil, nil).Skip(skip).Limit(limit).All(data)

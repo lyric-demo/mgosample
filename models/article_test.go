@@ -59,6 +59,16 @@ func TestArticleGetData(t *testing.T) {
 	t.Log(data)
 }
 
+func TestArticleAllCount(t *testing.T) {
+	art := new(Article)
+	count, err := art.AllCount()
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	t.Log("Count:", count)
+}
+
 func TestArticleGetPageData(t *testing.T) {
 	var data []Article
 	art := new(Article)

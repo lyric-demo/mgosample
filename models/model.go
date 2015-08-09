@@ -15,14 +15,14 @@ var (
 )
 
 func init() {
-	_Session, err := mgo.Dial(fmt.Sprintf("mongodb://%s:%d", conf.DB_CONFIG.Host, conf.DB_CONFIG.Port))
+	_Session, err := mgo.Dial(fmt.Sprintf("mongodb://%s:%d", conf.DBCONFIG.Host, conf.DBCONFIG.Port))
 	if err != nil {
 		panic(fmt.Sprintf("Initialize mongodb error:%v", err))
 	}
-	_Database = _Session.DB(conf.DB_CONFIG.Database)
+	_Database = _Session.DB(conf.DBCONFIG.Database)
 	if err = _Session.Ping(); err != nil {
 		panic(fmt.Sprintf("MongoDB execute ping error:%v", err))
 	}
 	log.Println("MongoDB initialize success.")
-	mgo.SetDebug(conf.APP_CONFIG.Debug)
+	mgo.SetDebug(conf.APPCONFIG.Debug)
 }

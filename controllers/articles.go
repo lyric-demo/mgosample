@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"errors"
-	"fmt"
 	"net/http"
 
 	"github.com/labstack/echo"
@@ -43,10 +42,20 @@ func (a *ArticleController) GetData(c *echo.Context) error {
 	if err := article.GetPageData(skip, limit, &data); err != nil {
 		return err
 	}
+	meta := map[string]interface{}{"total": 0}
 	if data == nil {
 		data = make([]models.Article, 0)
+	} else {
+		totalCount, err := article.AllCount()
+		if err != nil {
+			return err
+		}
+		meta["total"] = a.GetTotalPages(limit, totalCount)
 	}
-	return c.JSON(http.StatusOK, a.GetResModel(data))
+	resModel := a.GetResModel(data)
+	resModel["meta"] = meta
+
+	return c.JSON(http.StatusOK, resModel)
 }
 
 // GetSingleData 获取单条记录
@@ -88,7 +97,6 @@ func (a *ArticleController) Update(c *echo.Context) error {
 	}
 	article := reqData["article"]
 	article.ID = bson.ObjectIdHex(id)
-	fmt.Println("===> Request data:", article)
 	if err := article.Update(); err != nil {
 		return err
 	}

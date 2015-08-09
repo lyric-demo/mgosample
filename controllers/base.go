@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"math"
 	"strconv"
 
 	"github.com/labstack/echo"
@@ -27,7 +28,7 @@ func (b *BaseController) GetPageParams() (skip, limit int) {
 		iPage = 1
 	}
 
-	pageSize := b.Context.Query("pagesize")
+	pageSize := b.Context.Query("limit")
 	if pageSize == "" {
 		pageSize = "0"
 	}
@@ -40,4 +41,13 @@ func (b *BaseController) GetPageParams() (skip, limit int) {
 	limit = iPageSize
 
 	return
+}
+
+// GetTotalPages 获取总页数
+func (b *BaseController) GetTotalPages(limit, totalCount int) int {
+	totalPages := math.Ceil(float64(totalCount) / float64(limit))
+	if totalPages == 0.0 {
+		return 1
+	}
+	return int(totalPages)
 }

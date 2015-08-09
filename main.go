@@ -18,7 +18,7 @@ import (
 func main() {
 	e := echo.New()
 
-	e.SetDebug(conf.APP_CONFIG.Debug)
+	e.SetDebug(conf.APPCONFIG.Debug)
 
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
@@ -38,7 +38,7 @@ func main() {
 			code = he.Code()
 			msg = he.Error()
 		}
-		if conf.APP_CONFIG.Debug {
+		if conf.APPCONFIG.Debug {
 			msg = err.Error()
 		}
 		c.JSON(code, util.Error(errors.New(msg)))
@@ -49,6 +49,6 @@ func main() {
 	// 注册文章管理路由
 	controllers.RegisterArticle(api)
 
-	log.Println(fmt.Sprintf("[%s] is running at %d port.", conf.APP_CONFIG.Name, conf.APP_CONFIG.Port))
-	e.Run(fmt.Sprintf(":%d", conf.APP_CONFIG.Port))
+	log.Println(fmt.Sprintf("[%s] is running at %d port.", conf.APPCONFIG.Name, conf.APPCONFIG.Port))
+	e.Run(fmt.Sprintf(":%d", conf.APPCONFIG.Port))
 }
